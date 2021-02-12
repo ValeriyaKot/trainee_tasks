@@ -125,3 +125,5 @@ dmypy.json
 .pyre/
 feature/.DS_Store
 feature/converter/.DS_Store
+
+.DS_Store
