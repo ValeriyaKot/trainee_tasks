@@ -123,7 +123,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-feature/.DS_Store
-feature/converter/.DS_Store
+csv-to-json-converter/.DS_Store
+csv-to-json-converter/converter/.DS_Store
 
 .DS_Store
