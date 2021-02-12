@@ -3,9 +3,9 @@ import sys
 
 class Converter(object):
 
-    def __init__(self, first_file_name, second_file_name):
-        self.first_file_name = first_file_name
-        self.second_file_name = second_file_name
+    def __init__(self, origin_file_path, destination_file_path):
+        self.first_file_name = origin_file_path
+        self.second_file_name = destination_file_path
         self.first_file = None
         self.second_file = None
         self.content = ''
@@ -13,26 +13,26 @@ class Converter(object):
     def convert(self):
         raise NotImplementedError
 
-    def open_file(self):
+    def open_files(self):
         self.first_file = open(self.first_file_name)
         self.content = self.first_file.read()
         self.second_file = open(self.second_file_name, 'w')
 
-    def close_file(self):
+    def close_files(self):
         self.first_file.close()
         self.second_file.close()
 
 
 class CsvToJsonConverter(Converter):
 
-    def __init__(self, first_file_name, second_file_name):
-        super(CsvToJsonConverter, self).__init__(first_file_name, second_file_name)
+    def __init__(self, origin_file_path, destination_file_path):
+        super(CsvToJsonConverter, self).__init__(origin_file_path, destination_file_path)
 
     def convert(self):
-        self.open_file()
+        self.open_files()
         self.split_text()
         self.join_text()
-        self.close_file()
+        self.close_files()
 
     def split_text(self):
         rows = self.content.split('\n')
