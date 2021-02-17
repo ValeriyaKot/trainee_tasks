@@ -7,19 +7,19 @@ class IntTypeCheckDecorator:
         self.func = func
 
     def __call__(self, arg):
-        if type(arg) is int:
+        if isinstance(arg, int):
             return self.func(arg)
         else:
-            print('TypeError')
+            raise TypeError
 
 
-def age_check_decorator(cls):
+def adult_check_decorator(cls):
     class Wrapper(cls):
         def check_age(self):
             if self.age >= 18:
                 return 'Adult'
             else:
-                return 'AgeError'
+                return 'Child'
 
     return Wrapper
 
@@ -55,8 +55,7 @@ def measure_speed_of_func(func):
         start = datetime.now()
         func(number)
         end = datetime.now()
-        speed = (end - start).total_seconds() * 1000
-        return speed
+        return (end - start).total_seconds() * 1000
 
     return wrapper
 
@@ -75,7 +74,8 @@ def find_squares(number):
 @HashListDecorator('test')
 def create_full_name(first_name, last_name):
     """Create full name"""
-    return first_name + ' ' + last_name
+    full_name = [first_name, last_name]
+    return full_name
 
 
 @write_date_of_func
@@ -83,7 +83,7 @@ def greet(username):
     return 'Hello, ' + username
 
 
-@age_check_decorator
+@adult_check_decorator
 class Person:
     def __init__(self, name, age):
         self.name = name
