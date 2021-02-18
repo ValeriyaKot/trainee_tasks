@@ -9,8 +9,9 @@ class Randomizer:
     def __next__(self):
         if self.number_of_iterations > 0:
             self.number_of_iterations -= 1
+            number = self.random_number
             self.random_number = self.random_number + uniform(0, 1)
-            return self.random_number
+            return number
         else:
             raise StopIteration
 
