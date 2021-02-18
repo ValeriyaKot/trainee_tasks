@@ -10,7 +10,7 @@ class Randomizer:
         if self.number_of_iterations > 0:
             self.number_of_iterations -= 1
             number = self.random_number
-            self.random_number = self.random_number + uniform(0, 1)
+            self.random_number += uniform(0, 1)
             return number
         else:
             raise StopIteration
