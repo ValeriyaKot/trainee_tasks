@@ -18,9 +18,6 @@ class MyQuerySet(models.QuerySet):
     def is_published(self):
         return self.filter(is_published=True)
 
-    def merge_objects(self, *args):
-        return self.select_related(*args)
-
     def sort_by_title(self):
         return self.all().order_by('title')
 
