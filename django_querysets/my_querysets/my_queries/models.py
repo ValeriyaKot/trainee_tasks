@@ -2,14 +2,8 @@ from django.db import models
 
 
 class MyQuerySet(models.QuerySet):
-    def create_object(self, **kwargs):
-        return self.create(**kwargs)
-
     def create_five_objects(self, obj_list):
         return self.bulk_create(obj_list, batch_size=5)
-
-    def update_object(self, **kwargs):
-        return self.update(**kwargs)
 
     def delete_object(self, **kwargs):
         return self.filter(**kwargs).delete()
@@ -21,7 +15,7 @@ class MyQuerySet(models.QuerySet):
     def delete_last_object(self):
         return self.order_by('id').last().delete()
 
-    def is_published_true(self):
+    def is_published(self):
         return self.filter(is_published=True)
 
     def merge_objects(self, *args):
@@ -41,14 +35,8 @@ class NewsManager(models.Manager):
     def get_queryset(self):
         return MyQuerySet(self.model, using=self._db)
 
-    def create_object(self, **kwargs):
-        return self.get_queryset().create_object(**kwargs)
-
     def create_five_objects(self, obj_list):
         return self.get_queryset().create_five_objects(obj_list)
-
-    def update_object(self, **kwargs):
-        return self.get_queryset().update_object(**kwargs)
 
     def delete_object(self, **kwargs):
         return self.get_queryset().delete_object(**kwargs)
@@ -59,8 +47,8 @@ class NewsManager(models.Manager):
     def delete_last_object(self):
         return self.get_queryset().delete_last_object()
 
-    def is_published_true(self):
-        return self.get_queryset().is_published_true()
+    def is_published(self):
+        return self.get_queryset().is_published()
 
     def merge_objects(self, *args):
         return self.get_queryset().merge_objects(*args)
