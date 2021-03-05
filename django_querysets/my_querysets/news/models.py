@@ -1,5 +1,5 @@
 from django.db import models
-from my_queries.models import NewsManager
+from my_queries.models import MyQuerySet
 
 
 class Category(models.Model):
@@ -16,7 +16,7 @@ class News(models.Model):
     published_date = models.DateField(auto_now_add=True)
     updated_date = models.DateField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    news = NewsManager()
+    news = MyQuerySet.as_manager()
 
     def __str__(self):
         return self.title

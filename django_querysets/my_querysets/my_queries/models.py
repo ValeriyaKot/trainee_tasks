@@ -29,35 +29,3 @@ class MyQuerySet(models.QuerySet):
 
     def filter_by_category(self, name):
         return self.filter(category__name=name)
-
-
-class NewsManager(models.Manager):
-    def get_queryset(self):
-        return MyQuerySet(self.model, using=self._db)
-
-    def create_five_objects(self, obj_list):
-        return self.get_queryset().create_five_objects(obj_list)
-
-    def delete_object(self, **kwargs):
-        return self.get_queryset().delete_object(**kwargs)
-
-    def delete_first_objects(self, id_number):
-        return self.get_queryset().delete_first_objects(id_number)
-
-    def delete_last_object(self):
-        return self.get_queryset().delete_last_object()
-
-    def is_published(self):
-        return self.get_queryset().is_published()
-
-    def merge_objects(self, *args):
-        return self.get_queryset().merge_objects(*args)
-
-    def sort_by_title(self):
-        return self.get_queryset().sort_by_title()
-
-    def count_topics(self):
-        return self.get_queryset().count_topics()
-
-    def filter_by_category(self, name):
-        return self.get_queryset().filter_by_category(name)
