@@ -11,30 +11,37 @@ LANGUAGE = [
 ]
 
 
-class Name(models.Model):
+class Nameable(models.Model):
     name = models.CharField(max_length=100, db_index=True)
 
     class Meta:
         abstract = True
 
 
-class Date(models.Model):
+class Timestampable(models.Model):
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True, null=True)
+
+    class Meta:
+        abstract = True
+
+
+class Deletable(models.Model):
+    deleted = models.BooleanField(default=False)
     deleted_at = models.DateTimeField(blank=True, default=None, null=True)
 
     class Meta:
         abstract = True
 
 
-class Style(Name, Date):
+class Style(Nameable, Timestampable, Deletable):
     objects = StyleQuerySet.as_manager()
 
     def __str__(self):
         return self.name
 
 
-class Author(Name, Date):
+class Author(Nameable, Timestampable, Deletable):
     country = models.CharField(max_length=250)
     age = models.IntegerField()
     objects = AuthorQuerySet.as_manager()
@@ -43,7 +50,7 @@ class Author(Name, Date):
         return self.name
 
 
-class Book(Name, Date):
+class Book(Nameable, Timestampable, Deletable):
     style = models.ForeignKey(Style, on_delete=models.CASCADE)
     year = models.DateField()
     authors = models.ManyToManyField(Author)

@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Sum
 from django.utils import timezone
+from django.db.models import F
 
 
 class MyQuerySet(models.QuerySet):
@@ -32,17 +33,17 @@ class MyQuerySet(models.QuerySet):
 
 class StyleQuerySet(models.QuerySet):
     def delete_style(self, style_id):
-        return self.filter(id=style_id).update(deleted_at=timezone.now())
+        return self.filter(id=style_id).update(deleted=True, deleted_at=timezone.now())
 
 
 class AuthorQuerySet(models.QuerySet):
     def delete_author(self, author_id):
-        return self.filter(id=author_id).update(deleted_at=timezone.now())
+        return self.filter(id=author_id).update(deleted=True, deleted_at=timezone.now())
 
 
 class BookQuerySet(models.QuerySet):
     def delete_book(self, book_id):
-        return self.filter(id=book_id).update(deleted_at=timezone.now())
+        return self.filter(id=book_id).update(deleted=True, deleted_at=timezone.now())
 
     def sort_authors(self):
         return self.prefetch_related('authors').order_by('authors__name').values_list('authors__name', flat=True) \
@@ -51,16 +52,16 @@ class BookQuerySet(models.QuerySet):
     def get_authors_by_country(self, country):
         return self.prefetch_related('authors').filter(authors__country=country,
                                                        authors__age__gt=30,
-                                                       authors__deleted_at=None) \
+                                                       authors__deleted=False) \
             .values_list('authors__name', flat=True).distinct()
 
     def get_books(self, author_name):
-        return self.prefetch_related('authors').filter(authors__name=author_name, authors__deleted_at=None)
+        return self.prefetch_related('authors').filter(authors__name=author_name, authors__deleted=False)
 
     def get_books_by_language(self, author_name, language):
         return self.prefetch_related('authors').filter(language=language,
                                                        authors__name=author_name,
-                                                       authors__deleted_at=None
+                                                       authors__deleted=False
                                                        )
 
     def count_books_by_author(self, author_name):
@@ -77,14 +78,14 @@ class BookQuerySet(models.QuerySet):
                                                        style__name=style
                                                        ).aggregate(Sum('pages_number'))
 
-    def sort_by_name(self):
-        return self.all().order_by('name')
-
-    def sort_by_name_desk(self):
-        return self.all().order_by('-name')
+    def sort_by_name(self, method):
+        if method == 'asc':
+            return self.all().order_by(F('name').asc())
+        elif method == 'desc':
+            return self.all().order_by(F('name').desc())
 
     def get_deleted_authors(self, letter):
-        return self.prefetch_related('authors').exclude(authors__deleted_at=None) \
+        return self.prefetch_related('authors').exclude(authors__deleted=False) \
             .filter(authors__name__startswith=letter).values_list('authors__name', flat=True)
 
     def get_authors_younger_than(self, age):
