@@ -84,7 +84,7 @@ class BookQuerySet(models.QuerySet):
         elif method == 'desc':
             return self.all().order_by(F('name').desc())
         else:
-            raise ValueError
+            raise ValueError(f"There is no such filtering type {method}")
 
     def get_deleted_authors(self, letter):
         return self.prefetch_related('authors').exclude(authors__deleted=False) \
