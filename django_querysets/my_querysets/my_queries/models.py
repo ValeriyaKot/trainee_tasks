@@ -83,6 +83,8 @@ class BookQuerySet(models.QuerySet):
             return self.all().order_by(F('name').asc())
         elif method == 'desc':
             return self.all().order_by(F('name').desc())
+        else:
+            raise ValueError
 
     def get_deleted_authors(self, letter):
         return self.prefetch_related('authors').exclude(authors__deleted=False) \
