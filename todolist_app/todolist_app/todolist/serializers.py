@@ -14,7 +14,7 @@ class ToDoListSerializer(serializers.Serializer):
     user = UserSerializer(read_only=True)
 
     def create(self, validated_data):
-        return ToDoList(**validated_data)
+        return ToDoList.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
