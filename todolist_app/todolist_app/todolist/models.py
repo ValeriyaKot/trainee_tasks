@@ -5,7 +5,7 @@ from .behavior import Timestampable
 
 class ToDoList(Timestampable):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    title = models.CharField(max_length=100, db_index=True)
+    title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     available = models.BooleanField(default=True)
 
