@@ -11,14 +11,14 @@ class ToDoListAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        user = self.request.user
+        user = request.user
         todolist = ToDoList.objects.filter(user=user)
         serializer = ToDoListSerializer(todolist, many=True)
         return Response(serializer.data)
 
     def post(self, request):
         serializer = ToDoListSerializer(data=request.data)
-        user = self.request.user
+        user = request.user
         if serializer.is_valid():
             serializer.save(user=user)
             serializer.save()
@@ -31,7 +31,7 @@ class ToDoListDetailAPIView(APIView):
 
     def get_object(self, request, pk):
         try:
-            user = self.request.user
+            user = request.user
             return ToDoList.objects.filter(user=user).get(pk=pk)
         except ToDoList.DoesNotExist:
             raise Http404
