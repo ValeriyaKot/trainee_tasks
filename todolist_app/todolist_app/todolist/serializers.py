@@ -10,7 +10,7 @@ class ToDoListSerializer(serializers.Serializer):
     title = serializers.CharField(max_length=100)
     description = serializers.CharField(allow_blank=True, allow_null=True, required=False,
                                         style={'base_template': 'textarea.html'})
-    available = serializers.BooleanField(required=False)
+    available = serializers.BooleanField(required=False, default=True)
     user = UserSerializer(read_only=True)
 
     def create(self, validated_data):
